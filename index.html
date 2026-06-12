@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Membros — IPB Jacareí</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --blue:#185FA5; --blue-lt:#E6F1FB; --blue-md:#378ADD;
+  --green:#0F6E56; --green-lt:#E1F5EE; --green-md:#1D9E75;
+  --pink:#993556; --pink-lt:#FBEAF0; --pink-md:#D4537E;
+  --amber:#BA7517; --amber-lt:#FEF3DC;
+  --purple:#534AB7; --purple-md:#7F77DD; --purple-lt:#EEEDFE;
+  --orange:#C4511A; --orange-lt:#FDEEE6;
+  --bg:#F5F4F0; --surface:#FFFFFF;
+  --border:rgba(0,0,0,0.08); --border2:rgba(0,0,0,0.05);
+  --text:#18180F; --muted:#65655E; --subtle:#A0A098;
+  --r:10px; --rs:6px;
+}
+html, body { width:100%; min-height:100%; }
+body { font-family:'Google Sans','Segoe UI',system-ui,sans-serif; background:var(--bg); color:var(--text); font-size:13px; line-height:1.5; }
+
+.hdr { background:var(--surface); border-bottom:1px solid var(--border); padding:11px 20px; display:flex; align-items:center; justify-content:space-between; position:sticky; top:0; z-index:10; }
+.hdr-left { display:flex; align-items:center; gap:10px; }
+.hdr-logo { width:30px; height:30px; border-radius:7px; background:var(--blue); display:flex; align-items:center; justify-content:center; color:#fff; font-weight:700; font-size:11px; }
+.hdr-title { font-size:13px; font-weight:600; }
+.hdr-sub { font-size:10px; color:var(--muted); }
+.btn { font-size:11px; padding:5px 12px; border-radius:var(--rs); background:transparent; border:1px solid var(--border); color:var(--muted); cursor:pointer; }
+.btn:hover { background:var(--bg); color:var(--text); }
+
+.state { display:flex; flex-direction:column; align-items:center; justify-content:center; min-height:60vh; gap:10px; color:var(--muted); }
+.spinner { width:26px; height:26px; border:3px solid var(--border); border-top-color:var(--blue-md); border-radius:50%; animation:spin .7s linear infinite; }
+@keyframes spin { to { transform:rotate(360deg); } }
+
+.dash { padding:18px 20px 28px; max-width:1100px; margin:0 auto; }
+.sec { font-size:9px; font-weight:700; letter-spacing:.12em; text-transform:uppercase; color:var(--subtle); margin:20px 0 9px; }
+.sec:first-child { margin-top:0; }
+
+.kpi-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(110px,1fr)); gap:8px; }
+.kpi { background:var(--surface); border-radius:var(--r); border:1px solid var(--border); padding:12px 14px; }
+.kpi-lbl { font-size:10px; color:var(--muted); margin-bottom:3px; }
+.kpi-val { font-size:24px; font-weight:600; line-height:1.1; }
+.kpi-sub { font-size:10px; color:var(--subtle); margin-top:2px; }
+.kpi.accent  { border-left:3px solid var(--blue);      } .kpi.accent  .kpi-val { color:var(--blue); }
+.kpi.green   { border-left:3px solid var(--green);     } .kpi.green   .kpi-val { color:var(--green); }
+.kpi.amber   { border-left:3px solid var(--amber);     } .kpi.amber   .kpi-val { color:var(--amber); }
+.kpi.pink    { border-left:3px solid var(--pink-md);   } .kpi.pink    .kpi-val { color:var(--pink-md); }
+.kpi.purple  { border-left:3px solid var(--purple-md); } .kpi.purple  .kpi-val { color:var(--purple-md); }
+.kpi.orange  { border-left:3px solid var(--orange);    } .kpi.orange  .kpi-val { color:var(--orange); }
+
+.tipo-pills { display:flex; gap:8px; margin-bottom:16px; }
+.pill { flex:1; background:var(--surface); border-radius:var(--r); border:1px solid var(--border); padding:12px 16px; display:flex; align-items:center; justify-content:space-between; }
+.pill-left { display:flex; flex-direction:column; }
+.pill-lbl { font-size:10px; color:var(--muted); margin-bottom:2px; }
+.pill-val { font-size:28px; font-weight:600; line-height:1; }
+.pill-sub { font-size:10px; color:var(--subtle); margin-top:2px; }
+.pill-badge { font-size:18px; font-weight:700; padding:6px 12px; border-radius:var(--rs); }
+.pill.com  { border-left:4px solid var(--blue);  } .pill.com  .pill-val { color:var(--blue);  } .pill.com  .pill-badge { background:var(--blue-lt);  color:var(--blue);  }
+.pill.ncom { border-left:4px solid var(--green); } .pill.ncom .pill-val { color:var(--green); } .pill.ncom .pill-badge { background:var(--green-lt); color:var(--green); }
+
+.ig-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:8px; }
+.ig-card { background:var(--surface); border-radius:var(--r); border:1px solid var(--border); padding:14px; }
+.ig-bar { height:3px; border-radius:2px; margin-bottom:10px; }
+.ig-nome { font-size:11px; font-weight:600; margin-bottom:2px; }
+.ig-total { font-size:26px; font-weight:600; line-height:1.1; margin-bottom:6px; }
+.ig-pct-track { height:5px; background:var(--bg); border-radius:3px; margin-bottom:8px; overflow:hidden; }
+.ig-pct-fill { height:100%; border-radius:3px; }
+.tags { display:flex; gap:4px; flex-wrap:wrap; margin-bottom:8px; }
+.tag { font-size:9px; font-weight:700; padding:2px 7px; border-radius:20px; }
+.tag-c  { background:var(--blue-lt);  color:var(--blue);  }
+.tag-nc { background:var(--green-lt); color:var(--green); }
+.ig-rows { border-top:1px solid var(--border2); padding-top:7px; }
+.ig-row { display:flex; justify-content:space-between; font-size:10px; color:var(--muted); padding:2px 0; }
+.ig-row span:last-child { font-weight:600; color:var(--text); }
+
+.g2  { display:grid; grid-template-columns:1fr 1fr; gap:8px; }
+.g3  { display:grid; grid-template-columns:1fr 1fr 1fr; gap:8px; }
+.g2h { display:grid; grid-template-columns:2fr 1fr; gap:8px; }
+
+.card { background:var(--surface); border-radius:var(--r); border:1px solid var(--border); padding:14px; }
+.card-title { font-size:11px; font-weight:600; color:var(--text); margin-bottom:10px; display:flex; justify-content:space-between; align-items:center; }
+.card-note { font-size:9px; font-weight:400; color:var(--subtle); }
+.legend { display:flex; flex-wrap:wrap; gap:8px; font-size:10px; color:var(--muted); margin-bottom:8px; }
+.dot { display:inline-block; width:8px; height:8px; border-radius:2px; margin-right:3px; vertical-align:middle; }
+.chart-wrap { position:relative; }
+
+.bar-list { display:flex; flex-direction:column; gap:6px; }
+.bar-item { display:flex; align-items:center; gap:7px; }
+.bar-lbl { font-size:10px; color:var(--muted); min-width:96px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.bar-track { flex:1; height:6px; background:var(--bg); border-radius:3px; overflow:hidden; }
+.bar-fill { height:100%; border-radius:3px; }
+.bar-num { font-size:10px; font-weight:600; color:var(--text); min-width:22px; text-align:right; }
+
+.sem-data-badge { display:inline-flex; align-items:center; gap:6px; background:var(--amber-lt); border:1px solid rgba(186,117,23,.2); border-radius:var(--rs); padding:5px 10px; font-size:10px; color:var(--amber); font-weight:500; margin-bottom:10px; }
+.footer { font-size:10px; color:var(--subtle); text-align:right; margin-top:18px; }
+
+@media (max-width: 600px) {
+  .ig-grid { grid-template-columns:1fr; }
+  .g2, .g2h { grid-template-columns:1fr; }
+  .g3 { grid-template-columns:1fr; }
+  .tipo-pills { flex-direction:column; }
+  .dash { padding:14px 12px 24px; }
+}
+</style>
+</head>
+<body>
+
+<div class="hdr">
+  <div class="hdr-left">
+    <div class="hdr-logo">IPB</div>
+    <div>
+      <div class="hdr-title">Painel de Membros</div>
+      <div class="hdr-sub">Igreja Presbiteriana do Brasil — Jacareí</div>
+    </div>
+  </div>
+  <button class="btn" onclick="loadData()">↻ Atualizar</button>
+</div>
+
+<div id="loading" class="state">
+  <div class="spinner"></div>
+  <span>Carregando dados da planilha…</span>
+</div>
+<div id="error" class="state" style="display:none">
+  <span style="font-size:20px">⚠️</span>
+  <span id="errmsg"></span>
+  <button class="btn" onclick="loadData()" style="margin-top:8px">Tentar novamente</button>
+</div>
+<div id="dash" class="dash" style="display:none"></div>
+
+<script>
+// ← COLE AQUI A URL DO SEU WEB APP
+var API_URL = "https://script.google.com/macros/s/AKfycbwTdna4EzvDo5W_TmItEzuYhqGmM7ak8rZ8XzlXgo3SC4cMo7DOjgGjGtrspGi0lMAY/exec";
+
+var CH = [];
+function destroyCharts() { CH.forEach(function(c){ c.destroy(); }); CH = []; }
+
+function loadData() {
+  document.getElementById('loading').style.display = 'flex';
+  document.getElementById('error').style.display   = 'none';
+  document.getElementById('dash').style.display    = 'none';
+  destroyCharts();
+
+  fetch(API_URL)
+    .then(function(res) {
+      if (!res.ok) throw new Error('HTTP ' + res.status);
+      return res.json();
+    })
+    .then(function(data) {
+      renderDash(data);
+    })
+    .catch(function(err) {
+      showErr('Erro ao carregar dados: ' + err.message);
+    });
+}
+
+function showErr(msg) {
+  document.getElementById('loading').style.display = 'none';
+  document.getElementById('errmsg').textContent    = msg;
+  document.getElementById('error').style.display   = 'flex';
+}
+
+function pct(v, t) { return t ? Math.round(v/t*100) : 0; }
+
+function limpar(arr) {
+  return (arr || []).filter(function(i) {
+    var l = (i.label || '').toLowerCase();
+    return l !== 'sem registro' && l !== '';
+  });
+}
+
+function renderDash(d) {
+  document.getElementById('loading').style.display = 'none';
+  var el = document.getElementById('dash');
+  el.innerHTML = buildHTML(d);
+  el.style.display = 'block';
+  setTimeout(function(){ buildCharts(d); }, 60);
+}
+
+function buildHTML(d) {
+  var r     = d.resumo;
+  var total = r.comungantes + r.nao_comungantes;
+  var now   = new Date().toLocaleString('pt-BR');
+  var cores = ['var(--blue)','var(--green)','var(--pink-md)'];
+
+  var semData = 0;
+  var cAnos = [], cCom = [], cNcom = [];
+  for (var i = 0; i < d.crescimento.anos.length; i++) {
+    if (d.crescimento.anos[i] === 1960) {
+      semData = d.crescimento.comungantes[i];
+    } else {
+      cAnos.push(d.crescimento.anos[i]);
+      cCom.push(d.crescimento.comungantes[i]);
+      cNcom.push(d.crescimento.nao_comungantes[i] || 0);
+    }
+  }
+  d._cAnos = cAnos; d._cCom = cCom; d._cNcom = cNcom;
+
+  var pills = '<div class="tipo-pills">'
+    + '<div class="pill com"><div class="pill-left"><div class="pill-lbl">Comungantes</div><div class="pill-val">'+r.comungantes+'</div><div class="pill-sub">'+pct(r.comungantes,total)+'% do total · membros plenos</div></div><div class="pill-badge">C</div></div>'
+    + '<div class="pill ncom"><div class="pill-left"><div class="pill-lbl">Não Comungantes</div><div class="pill-val">'+r.nao_comungantes+'</div><div class="pill-sub">'+pct(r.nao_comungantes,total)+'% do total · catecúmenos</div></div><div class="pill-badge">NC</div></div>'
+    + '</div>';
+
+  var kpis = '<p class="sec">Indicadores</p><div class="kpi-grid">'
+    + K('Total ativo',    total,            'comungantes + não com.',                'accent')
+    + K('Feminino',       d.sexo.feminino,  pct(d.sexo.feminino,total)+'% do total', 'pink')
+    + K('Masculino',      d.sexo.masculino, pct(d.sexo.masculino,total)+'% do total','purple')
+    + K('Idade média',    r.media_idade,    'anos (comungantes)',                    'amber')
+    + K('Central',        d.igrejas[0].comungantes+d.igrejas[0].nao_comungantes, pct(d.igrejas[0].comungantes+d.igrejas[0].nao_comungantes,total)+'% do total','accent')
+    + K('Villa Branca',   d.igrejas[1].comungantes+d.igrejas[1].nao_comungantes, pct(d.igrejas[1].comungantes+d.igrejas[1].nao_comungantes,total)+'% do total','green')
+    + K('Nova Esperança', d.igrejas[2].comungantes+d.igrejas[2].nao_comungantes, pct(d.igrejas[2].comungantes+d.igrejas[2].nao_comungantes,total)+'% do total','orange')
+    + (semData > 0 ? '<div class="kpi amber"><div class="kpi-lbl">Sem data inclusão</div><div class="kpi-val">'+semData+'</div><div class="kpi-sub">marcados como 01/01/1960</div></div>' : '')
+    + '</div>';
+
+  var igrejas = '<p class="sec">Por Congregação</p><div class="ig-grid">'
+    + d.igrejas.map(function(ig, i) {
+        var sub = ig.comungantes + ig.nao_comungantes;
+        var p   = pct(sub, total);
+        return '<div class="ig-card">'
+          + '<div class="ig-bar" style="background:'+cores[i]+';width:'+p+'%"></div>'
+          + '<div class="ig-nome">'+ig.nome+'</div>'
+          + '<div class="ig-total" style="color:'+cores[i]+'">'+sub+'</div>'
+          + '<div class="ig-pct-track"><div class="ig-pct-fill" style="width:'+p+'%;background:'+cores[i]+'"></div></div>'
+          + '<div class="tags"><span class="tag tag-c">'+ig.comungantes+' com.</span><span class="tag tag-nc">'+ig.nao_comungantes+' n.com.</span></div>'
+          + '<div class="ig-rows"><div class="ig-row"><span>% do total</span><span>'+p+'%</span></div></div>'
+          + '</div>';
+      }).join('')
+    + '</div>';
+
+  var comp = '<p class="sec">Composição</p><div class="g2h">'
+    + '<div class="card"><div class="card-title">Faixa etária</div>'
+    + '<div class="legend"><span><span class="dot" style="background:#378ADD"></span>Comungantes</span><span><span class="dot" style="background:#1D9E75"></span>Não comungantes</span></div>'
+    + '<div class="chart-wrap" style="height:180px"><canvas id="cAge"></canvas></div></div>'
+    + '<div class="card"><div class="card-title">Sexo</div>'
+    + '<div class="legend"><span><span class="dot" style="background:#378ADD"></span>Masc. '+d.sexo.masculino+'</span><span><span class="dot" style="background:#D4537E"></span>Fem. '+d.sexo.feminino+'</span></div>'
+    + '<div class="chart-wrap" style="height:180px"><canvas id="cSex"></canvas></div></div>'
+    + '</div>';
+
+  var growth = '<p class="sec">Crescimento — inclusões por ano</p><div class="card">'
+    + (semData > 0 ? '<div class="sem-data-badge">⚠️ '+semData+' membros sem data de inclusão registrada não aparecem neste gráfico</div>' : '')
+    + '<div class="legend"><span><span class="dot" style="background:#378ADD"></span>Comungantes</span><span><span class="dot" style="background:#1D9E75"></span>Não comungantes</span></div>'
+    + '<div class="chart-wrap" style="height:190px"><canvas id="cGrow"></canvas></div></div>';
+
+  var motivos = '<p class="sec">Motivo de Inclusão</p><div class="card"><div class="bar-list" id="bMot"></div></div>';
+
+  var escola = limpar(d.escolaridade);
+  var origem = limpar(d.origem);
+  var filhos = limpar(d.filhos);
+
+  var perfil = '<p class="sec">Perfil</p><div class="g2">'
+    + '<div class="card"><div class="card-title">Estado Civil</div><div class="bar-list" id="bCiv"></div></div>'
+    + '<div class="card"><div class="card-title">Cidade de Residência</div><div class="bar-list" id="bCid"></div></div>'
+    + '</div>'
+    + '<div class="g3" style="margin-top:8px">'
+    + '<div class="card"><div class="card-title">Escolaridade <span class="card-note">'+escola.length+' valores</span></div><div class="bar-list" id="bEsc"></div></div>'
+    + '<div class="card"><div class="card-title">Origem Religiosa <span class="card-note">'+origem.length+' valores</span></div><div class="bar-list" id="bOri"></div></div>'
+    + '<div class="card"><div class="card-title">Possui Filhos <span class="card-note">'+filhos.length+' valores</span></div><div class="bar-list" id="bFil"></div></div>'
+    + '</div>';
+
+  return pills + kpis + igrejas + comp + growth + motivos + perfil
+    + '<div class="footer">Atualizado em ' + now + '</div>';
+}
+
+function K(lbl, val, sub, cls) {
+  return '<div class="kpi '+cls+'"><div class="kpi-lbl">'+lbl+'</div><div class="kpi-val">'+val+'</div><div class="kpi-sub">'+sub+'</div></div>';
+}
+
+function buildCharts(d) {
+  var tc = 'rgba(0,0,0,0.38)';
+  var gc = 'rgba(0,0,0,0.05)';
+
+  CH.push(new Chart(document.getElementById('cAge'), {
+    type:'bar',
+    data:{ labels:d.faixas.labels, datasets:[
+      { label:'Comungantes',     data:d.faixas.comungantes,     backgroundColor:'#378ADD', borderRadius:3 },
+      { label:'Não comungantes', data:d.faixas.nao_comungantes, backgroundColor:'#1D9E75', borderRadius:3 }
+    ]},
+    options:{ responsive:true, maintainAspectRatio:false, plugins:{ legend:{ display:false } },
+      scales:{ x:{ ticks:{ color:tc, font:{ size:10 } }, grid:{ color:gc } }, y:{ ticks:{ color:tc, font:{ size:10 } }, grid:{ color:gc } } } }
+  }));
+
+  CH.push(new Chart(document.getElementById('cSex'), {
+    type:'doughnut',
+    data:{ labels:['Masculino','Feminino'], datasets:[{ data:[d.sexo.masculino,d.sexo.feminino], backgroundColor:['#378ADD','#D4537E'], borderWidth:0 }] },
+    options:{ responsive:true, maintainAspectRatio:false, cutout:'62%', plugins:{ legend:{ display:false } } }
+  }));
+
+  CH.push(new Chart(document.getElementById('cGrow'), {
+    type:'bar',
+    data:{ labels:d._cAnos, datasets:[
+      { label:'Comungantes',     data:d._cCom,  backgroundColor:'#378ADD', borderRadius:3, stack:'a' },
+      { label:'Não comungantes', data:d._cNcom, backgroundColor:'#1D9E75', borderRadius:3, stack:'a' }
+    ]},
+    options:{ responsive:true, maintainAspectRatio:false, plugins:{ legend:{ display:false } },
+      scales:{ x:{ stacked:true, ticks:{ color:tc, font:{ size:9 }, maxRotation:45, autoSkip:false }, grid:{ color:gc } },
+               y:{ stacked:true, ticks:{ color:tc, font:{ size:10 } }, grid:{ color:gc } } } }
+  }));
+
+  fillBars('bMot', limpar(d.motivos),      '#378ADD');
+  fillBars('bCiv', limpar(d.civil),        '#1D9E75');
+  fillBars('bCid', limpar(d.cidades),      '#185FA5');
+  fillBars('bEsc', limpar(d.escolaridade), '#7F77DD');
+  fillBars('bOri', limpar(d.origem),       '#D85A30');
+  fillBars('bFil', limpar(d.filhos),       '#D4537E');
+}
+
+function fillBars(id, items, color) {
+  var el = document.getElementById(id);
+  if (!el) return;
+  if (!items || !items.length) {
+    el.innerHTML = '<span style="font-size:10px;color:var(--subtle)">Sem dados suficientes</span>';
+    return;
+  }
+  var max = Math.max.apply(null, items.map(function(i){ return i.valor; }));
+  el.innerHTML = items.slice(0,8).map(function(item){
+    return '<div class="bar-item">'
+      + '<span class="bar-lbl" title="'+item.label+'">'+item.label+'</span>'
+      + '<div class="bar-track"><div class="bar-fill" style="width:'+Math.round(item.valor/max*100)+'%;background:'+color+'"></div></div>'
+      + '<span class="bar-num">'+item.valor+'</span>'
+      + '</div>';
+  }).join('');
+}
+
+loadData();
+</script>
+</body>
+</html>
