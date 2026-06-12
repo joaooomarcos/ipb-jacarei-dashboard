@@ -8,36 +8,45 @@
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 :root {
-  --blue:#185FA5; --blue-lt:#E6F1FB; --blue-md:#378ADD;
-  --green:#0F6E56; --green-lt:#E1F5EE; --green-md:#1D9E75;
-  --pink:#993556; --pink-lt:#FBEAF0; --pink-md:#D4537E;
-  --amber:#BA7517; --amber-lt:#FEF3DC;
-  --purple:#534AB7; --purple-md:#7F77DD; --purple-lt:#EEEDFE;
-  --orange:#C4511A; --orange-lt:#FDEEE6;
-  --bg:#F5F4F0; --surface:#FFFFFF;
-  --border:rgba(0,0,0,0.08); --border2:rgba(0,0,0,0.05);
-  --text:#18180F; --muted:#65655E; --subtle:#A0A098;
+  /* Identidade visual */
+  --ink:#012615;        /* escura */
+  --brand:#013C21;      /* primária — Central */
+  --brand-deep:#036135; /* clara */
+  --brand-md:#0B8A4D;   /* derivada p/ gráficos */
+  --brand-lt:#E4F0E8;
+  --accent:#FFFF77;     /* destaque */
+  --teal:#0E5A66;  --teal-md:#1B8A9C;  --teal-lt:#E3F1F3;   /* Villa Branca */
+  --gold:#8C6D1F;  --gold-md:#C2A032;  --gold-lt:#F8F1DA;   /* Nova Esperança */
+  --terra:#9C3D2E; --terra-md:#C05B49; --terra-lt:#F8E9E5;  /* saídas */
+  --plum:#7A3B5E;  --plum-md:#A1567F;                        /* feminino */
+  --gray:#595959; --gray2:#949494; --gray-lt:#EFEFEC;
+  --bg:#F3F5F2; --surface:#FFFFFF;
+  --border:rgba(1,38,21,0.10); --border2:rgba(1,38,21,0.06);
+  --text:#121A14; --muted:#595959; --subtle:#949494;
   --r:10px; --rs:6px;
 }
 html, body { width:100%; min-height:100%; }
 body { font-family:'Google Sans','Segoe UI',system-ui,sans-serif; background:var(--bg); color:var(--text); font-size:13px; line-height:1.5; }
 
 .top { position:sticky; top:0; z-index:10; background:var(--surface); border-bottom:1px solid var(--border); }
-.hdr { padding:11px 20px; display:flex; align-items:center; justify-content:space-between; max-width:1100px; margin:0 auto; }
-.hdr-left { display:flex; align-items:center; gap:10px; }
-.hdr-logo { width:30px; height:30px; border-radius:7px; background:var(--blue); display:flex; align-items:center; justify-content:center; color:#fff; font-weight:700; font-size:11px; }
-.hdr-title { font-size:13px; font-weight:600; }
-.hdr-sub { font-size:10px; color:var(--muted); }
-.btn { font-size:11px; padding:5px 12px; border-radius:var(--rs); background:transparent; border:1px solid var(--border); color:var(--muted); cursor:pointer; }
-.btn:hover { background:var(--bg); color:var(--text); }
+.hdr { background:var(--ink); padding:10px 20px; }
+.hdr-in { max-width:1100px; margin:0 auto; display:flex; align-items:center; justify-content:space-between; }
+.hdr-left { display:flex; align-items:center; gap:11px; }
+.hdr-logo { width:36px; height:36px; border-radius:50%; display:block; }
+.hdr-title { font-size:13px; font-weight:600; color:#fff; }
+.hdr-sub { font-size:10px; color:#9DBCA9; }
+.btn { font-size:11px; padding:5px 12px; border-radius:var(--rs); background:transparent; border:1px solid rgba(255,255,255,0.28); color:#D7E5DC; cursor:pointer; }
+.btn:hover { background:rgba(255,255,255,0.08); color:#fff; }
+.btn.dark { border-color:var(--border); color:var(--muted); }
+.btn.dark:hover { background:var(--bg); color:var(--text); }
 
-.filter-bar { display:flex; gap:6px; padding:0 20px 10px; max-width:1100px; margin:0 auto; flex-wrap:wrap; }
+.filter-bar { display:flex; gap:6px; padding:10px 20px; max-width:1100px; margin:0 auto; flex-wrap:wrap; }
 .fbtn { font-size:11px; font-weight:600; padding:6px 16px; border-radius:20px; border:1px solid var(--border); background:var(--surface); color:var(--muted); cursor:pointer; transition:background .15s, color .15s, border-color .15s; }
 .fbtn:hover { background:var(--bg); color:var(--text); }
-.fbtn.active { background:var(--ab,var(--text)); border-color:var(--ab,var(--text)); color:#fff; }
+.fbtn.active { background:var(--ab,var(--ink)); border-color:var(--ab,var(--ink)); color:var(--abt,#fff); }
 
 .state { display:flex; flex-direction:column; align-items:center; justify-content:center; min-height:60vh; gap:10px; color:var(--muted); }
-.spinner { width:26px; height:26px; border:3px solid var(--border); border-top-color:var(--blue-md); border-radius:50%; animation:spin .7s linear infinite; }
+.spinner { width:26px; height:26px; border:3px solid var(--border); border-top-color:var(--brand-md); border-radius:50%; animation:spin .7s linear infinite; }
 @keyframes spin { to { transform:rotate(360deg); } }
 
 .dash { padding:18px 20px 28px; max-width:1100px; margin:0 auto; }
@@ -49,12 +58,12 @@ body { font-family:'Google Sans','Segoe UI',system-ui,sans-serif; background:var
 .kpi-lbl { font-size:10px; color:var(--muted); margin-bottom:3px; }
 .kpi-val { font-size:24px; font-weight:600; line-height:1.1; }
 .kpi-sub { font-size:10px; color:var(--subtle); margin-top:2px; }
-.kpi.accent  { border-left:3px solid var(--blue);      } .kpi.accent  .kpi-val { color:var(--blue); }
-.kpi.green   { border-left:3px solid var(--green);     } .kpi.green   .kpi-val { color:var(--green); }
-.kpi.amber   { border-left:3px solid var(--amber);     } .kpi.amber   .kpi-val { color:var(--amber); }
-.kpi.pink    { border-left:3px solid var(--pink-md);   } .kpi.pink    .kpi-val { color:var(--pink-md); }
-.kpi.purple  { border-left:3px solid var(--purple-md); } .kpi.purple  .kpi-val { color:var(--purple-md); }
-.kpi.orange  { border-left:3px solid var(--orange);    } .kpi.orange  .kpi-val { color:var(--orange); }
+.kpi.brand { border-left:3px solid var(--brand);   } .kpi.brand .kpi-val { color:var(--brand); }
+.kpi.teal  { border-left:3px solid var(--teal);    } .kpi.teal  .kpi-val { color:var(--teal); }
+.kpi.gold  { border-left:3px solid var(--gold);    } .kpi.gold  .kpi-val { color:var(--gold); }
+.kpi.terra { border-left:3px solid var(--terra);   } .kpi.terra .kpi-val { color:var(--terra); }
+.kpi.plum  { border-left:3px solid var(--plum-md); } .kpi.plum  .kpi-val { color:var(--plum-md); }
+.kpi.gray  { border-left:3px solid var(--gray2);   } .kpi.gray  .kpi-val { color:var(--gray); }
 
 .tipo-pills { display:flex; gap:8px; margin-bottom:16px; }
 .pill { flex:1; background:var(--surface); border-radius:var(--r); border:1px solid var(--border); padding:12px 16px; display:flex; align-items:center; justify-content:space-between; }
@@ -63,12 +72,12 @@ body { font-family:'Google Sans','Segoe UI',system-ui,sans-serif; background:var
 .pill-val { font-size:28px; font-weight:600; line-height:1; }
 .pill-sub { font-size:10px; color:var(--subtle); margin-top:2px; }
 .pill-badge { font-size:18px; font-weight:700; padding:6px 12px; border-radius:var(--rs); }
-.pill.com  { border-left:3px solid var(--blue);  } .pill.com  .pill-val { color:var(--blue);  } .pill.com  .pill-badge { background:var(--blue-lt);  color:var(--blue);  }
-.pill.ncom { border-left:3px solid var(--green); } .pill.ncom .pill-val { color:var(--green); } .pill.ncom .pill-badge { background:var(--green-lt); color:var(--green); }
+.pill.com  { border-left:3px solid var(--brand); } .pill.com  .pill-val { color:var(--brand); } .pill.com  .pill-badge { background:var(--brand-lt); color:var(--brand); }
+.pill.ncom { border-left:3px solid var(--gray2); } .pill.ncom .pill-val { color:var(--gray);  } .pill.ncom .pill-badge { background:var(--gray-lt);  color:var(--gray); }
 
 .ig-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:8px; }
 .ig-card { background:var(--surface); border-radius:var(--r); border:1px solid var(--border); padding:14px; cursor:pointer; transition:border-color .15s, box-shadow .15s; }
-.ig-card:hover { border-color:rgba(0,0,0,0.18); box-shadow:0 2px 8px rgba(0,0,0,0.06); }
+.ig-card:hover { border-color:rgba(1,38,21,0.25); box-shadow:0 2px 8px rgba(1,38,21,0.08); }
 .ig-bar { height:3px; border-radius:2px; margin-bottom:10px; }
 .ig-nome { font-size:11px; font-weight:600; margin-bottom:2px; }
 .ig-total { font-size:26px; font-weight:600; line-height:1.1; margin-bottom:6px; }
@@ -76,8 +85,8 @@ body { font-family:'Google Sans','Segoe UI',system-ui,sans-serif; background:var
 .ig-pct-fill { height:100%; border-radius:3px; }
 .tags { display:flex; gap:4px; flex-wrap:wrap; margin-bottom:8px; }
 .tag { font-size:9px; font-weight:700; padding:2px 7px; border-radius:20px; }
-.tag-c  { background:var(--blue-lt);  color:var(--blue);  }
-.tag-nc { background:var(--green-lt); color:var(--green); }
+.tag-c  { background:var(--brand-lt); color:var(--brand); }
+.tag-nc { background:var(--gray-lt);  color:var(--gray);  }
 .ig-rows { border-top:1px solid var(--border2); padding-top:7px; }
 .ig-row { display:flex; justify-content:space-between; font-size:10px; color:var(--muted); padding:2px 0; }
 .ig-row span:last-child { font-weight:600; color:var(--text); }
@@ -116,20 +125,22 @@ body { font-family:'Google Sans','Segoe UI',system-ui,sans-serif; background:var
 
 <div class="top">
   <div class="hdr">
-    <div class="hdr-left">
-      <div class="hdr-logo">IPB</div>
-      <div>
-        <div class="hdr-title">Painel de Membros</div>
-        <div class="hdr-sub">Igreja Presbiteriana do Brasil — Jacareí</div>
+    <div class="hdr-in">
+      <div class="hdr-left">
+        <img src="logo.png" alt="IPB Jacareí" class="hdr-logo">
+        <div>
+          <div class="hdr-title">Painel de Membros</div>
+          <div class="hdr-sub">Igreja Presbiteriana de Jacareí</div>
+        </div>
       </div>
+      <button class="btn" onclick="loadData()">↻ Atualizar</button>
     </div>
-    <button class="btn" onclick="loadData()">↻ Atualizar</button>
   </div>
   <div class="filter-bar" id="filterBar" style="display:none">
-    <button class="fbtn active" data-view="Geral" onclick="setView('Geral')">Geral</button>
-    <button class="fbtn" data-view="Central" style="--ab:#185FA5" onclick="setView('Central')">Central</button>
-    <button class="fbtn" data-view="Villa Branca" style="--ab:#0F6E56" onclick="setView('Villa Branca')">Villa Branca</button>
-    <button class="fbtn" data-view="Nova Esperança" style="--ab:#C4511A" onclick="setView('Nova Esperança')">Nova Esperança</button>
+    <button class="fbtn active" data-view="Geral" style="--ab:#012615;--abt:#FFFF77" onclick="setView('Geral')">Geral</button>
+    <button class="fbtn" data-view="Central" style="--ab:#013C21" onclick="setView('Central')">Central</button>
+    <button class="fbtn" data-view="Villa Branca" style="--ab:#0E5A66" onclick="setView('Villa Branca')">Villa Branca</button>
+    <button class="fbtn" data-view="Nova Esperança" style="--ab:#8C6D1F" onclick="setView('Nova Esperança')">Nova Esperança</button>
   </div>
 </div>
 
@@ -140,17 +151,23 @@ body { font-family:'Google Sans','Segoe UI',system-ui,sans-serif; background:var
 <div id="error" class="state" style="display:none">
   <span style="font-size:20px">⚠️</span>
   <span id="errmsg"></span>
-  <button class="btn" onclick="loadData()" style="margin-top:8px">Tentar novamente</button>
+  <button class="btn dark" onclick="loadData()" style="margin-top:8px">Tentar novamente</button>
 </div>
 <div id="dash" class="dash" style="display:none"></div>
 
 <script>
-// ← COLE AQUI A URL DO SEU WEB APP
-var API_URL = "https://raw.githubusercontent.com/joaooomarcos/ipb-jacarei-dashboard/main/data.json";
+// data.json é servido pelo GitHub Pages no mesmo domínio do painel
+var API_URL = "data.json";
 
-var C = { blue:'#185FA5', blueMd:'#378ADD', green:'#0F6E56', greenMd:'#1D9E75', pink:'#D4537E', purple:'#7F77DD', orange:'#C4511A', orangeMd:'#D85A30' };
-var IG_COLOR = { 'Central':C.blue, 'Villa Branca':C.green, 'Nova Esperança':C.orange };
-var IG_KPI   = { 'Central':'accent', 'Villa Branca':'green', 'Nova Esperança':'orange' };
+var C = {
+  brand:'#013C21', brandDeep:'#036135', brandMd:'#0B8A4D',
+  teal:'#0E5A66', tealMd:'#1B8A9C',
+  gold:'#8C6D1F', goldMd:'#C2A032',
+  terra:'#9C3D2E', terraMd:'#C05B49',
+  plum:'#A1567F', gray:'#949494', grayDark:'#595959'
+};
+var IG_COLOR = { 'Central':C.brand, 'Villa Branca':C.teal, 'Nova Esperança':C.gold };
+var IG_KPI   = { 'Central':'brand', 'Villa Branca':'teal', 'Nova Esperança':'gold' };
 
 var DATA = null;
 var VIEW = 'Geral';
@@ -202,26 +219,27 @@ function limpar(arr) {
   });
 }
 
-// Anos marcados como 1960 são membros sem data de inclusão — ficam fora do gráfico
-function prepGrowth(cresc) {
-  var anos = [], com = [], ncom = [];
-  for (var i = 0; i < cresc.anos.length; i++) {
-    if (cresc.anos[i] === 1960) continue;
-    anos.push(cresc.anos[i]);
-    com.push(cresc.comungantes[i]);
-    ncom.push(cresc.nao_comungantes[i] || 0);
+// Anos marcados como 1960 são membros sem data registrada — ficam fora dos gráficos
+function sem1960(anos, series) {
+  var out = { anos:[], s:series.map(function(){ return []; }) };
+  for (var i = 0; i < anos.length; i++) {
+    if (anos[i] === 1960) continue;
+    out.anos.push(anos[i]);
+    series.forEach(function(arr, j){ out.s[j].push(arr[i] || 0); });
   }
-  return { anos:anos, com:com, ncom:ncom };
+  return out;
 }
 
-// Retorna o conjunto de dados da visão atual: o documento inteiro no Geral,
-// ou o bloco opcional d.por_igreja[nome] quando uma congregação está selecionada
+// Conjunto de dados da visão atual: o documento inteiro no Geral,
+// ou o bloco d.por_igreja[nome] quando uma congregação está selecionada
 function getScope(d) {
   if (VIEW === 'Geral') {
     return {
       geral: true,
       com:   d.resumo.comungantes,
       ncom:  d.resumo.nao_comungantes,
+      aParte:    d.resumo.a_parte || 0,
+      exclusoes: d.resumo.exclusoes || 0,
       mediaIdade: d.resumo.media_idade,
       det:   d
     };
@@ -234,6 +252,8 @@ function getScope(d) {
     nome:  VIEW,
     com:   ig ? ig.comungantes : 0,
     ncom:  ig ? ig.nao_comungantes : 0,
+    aParte:    ig ? (ig.a_parte || 0) : 0,
+    exclusoes: ig ? (ig.exclusoes || 0) : 0,
     mediaIdade: det && det.media_idade,
     det:   det
   };
@@ -260,19 +280,16 @@ function buildHTML(d, s) {
     + '</div>';
 
   var kpis = '<p class="sec">Indicadores</p><div class="kpi-grid">';
-  if (s.geral) {
-    kpis += K('Total ativo', total,            'comungantes + não com.',                 'accent')
-          + K('Feminino',    d.sexo.feminino,  pct(d.sexo.feminino,total)+'% do total',  'pink')
-          + K('Masculino',   d.sexo.masculino, pct(d.sexo.masculino,total)+'% do total', 'purple')
-          + K('Idade média', s.mediaIdade,     'anos (comungantes)',                     'amber');
-  } else {
-    kpis += K('Total ativo',  total, pct(total,totalGeral)+'% da igreja', IG_KPI[s.nome]);
-    if (s.det && s.det.sexo) {
-      kpis += K('Feminino',  s.det.sexo.feminino,  pct(s.det.sexo.feminino,total)+'% do total',  'pink')
-            + K('Masculino', s.det.sexo.masculino, pct(s.det.sexo.masculino,total)+'% do total', 'purple');
-    }
-    if (s.mediaIdade) kpis += K('Idade média', s.mediaIdade, 'anos (comungantes)', 'amber');
+  kpis += s.geral
+    ? K('Total ativo', total, 'comungantes + não com.', 'brand')
+    : K('Total ativo', total, pct(total,totalGeral)+'% da igreja', IG_KPI[s.nome]);
+  var sx = s.det && s.det.sexo;
+  if (sx) {
+    kpis += K('Feminino',  sx.feminino,  pct(sx.feminino,total)+'% do total',  'plum')
+          + K('Masculino', sx.masculino, pct(sx.masculino,total)+'% do total', 'teal');
   }
+  if (s.mediaIdade) kpis += K('Idade média', s.mediaIdade, 'anos (membros ativos)', 'gold');
+  kpis += K('A parte', s.aParte, 'membros inativos', 'gray');
   kpis += '</div>';
 
   var igrejas = '';
@@ -281,7 +298,7 @@ function buildHTML(d, s) {
       + d.igrejas.map(function(ig) {
           var sub = ig.comungantes + ig.nao_comungantes;
           var p   = pct(sub, totalGeral);
-          var cor = IG_COLOR[ig.nome] || C.blue;
+          var cor = IG_COLOR[ig.nome] || C.brand;
           return '<div class="ig-card" onclick="setView(\''+ig.nome+'\')" title="Ver só '+ig.nome+'">'
             + '<div class="ig-bar" style="background:'+cor+';width:'+p+'%"></div>'
             + '<div class="ig-nome">'+ig.nome+'</div>'
@@ -297,22 +314,47 @@ function buildHTML(d, s) {
   var detalhes = '';
   if (s.det) {
     var dd = s.det;
-    var legendCN = '<div class="legend"><span><span class="dot" style="background:'+C.blueMd+'"></span>Comungantes</span><span><span class="dot" style="background:'+C.greenMd+'"></span>Não comungantes</span></div>';
+    var legendCN = '<div class="legend"><span><span class="dot" style="background:'+C.brandMd+'"></span>Comungantes</span><span><span class="dot" style="background:'+C.gray+'"></span>Não comungantes</span></div>';
 
     var comp = '<p class="sec">Composição</p><div class="g2h">'
       + '<div class="card"><div class="card-title">Faixa etária</div>'
       + legendCN
       + '<div class="chart-wrap" style="height:180px"><canvas id="cAge"></canvas></div></div>'
       + '<div class="card"><div class="card-title">Sexo</div>'
-      + '<div class="legend"><span><span class="dot" style="background:'+C.blueMd+'"></span>Masc. '+dd.sexo.masculino+'</span><span><span class="dot" style="background:'+C.pink+'"></span>Fem. '+dd.sexo.feminino+'</span></div>'
+      + '<div class="legend"><span><span class="dot" style="background:'+C.tealMd+'"></span>Masc. '+dd.sexo.masculino+'</span><span><span class="dot" style="background:'+C.plum+'"></span>Fem. '+dd.sexo.feminino+'</span></div>'
       + '<div class="chart-wrap" style="height:180px"><canvas id="cSex"></canvas></div></div>'
       + '</div>';
 
-    var growth = '<p class="sec">Crescimento — inclusões por ano</p><div class="card">'
+    var growth = '<p class="sec">Crescimento — movimentação de membros</p>';
+    if (dd.fluxo) {
+      var anoAtual = new Date().getFullYear();
+      var ix  = dd.fluxo.anos.indexOf(anoAtual);
+      var ent = ix >= 0 ? dd.fluxo.entradas[ix] : 0;
+      var sai = ix >= 0 ? dd.fluxo.saidas[ix]   : 0;
+      growth += '<div class="kpi-grid" style="margin-bottom:8px">'
+        + K('Entradas em '+anoAtual, ent, 'admissões no ano', 'brand')
+        + K('Saídas em '+anoAtual, sai, 'exclusões no ano', 'terra')
+        + K('Saldo '+anoAtual, (ent-sai >= 0 ? '+' : '')+(ent-sai), 'entradas − saídas', ent-sai >= 0 ? 'brand' : 'terra')
+        + K('Exclusões (total)', s.exclusoes, 'histórico do rol', 'gray')
+        + '</div>';
+    }
+    growth += '<div class="'+(dd.fluxo ? 'g2' : '')+'">'
+      + '<div class="card"><div class="card-title">Inclusões por ano <span class="card-note">membros ativos</span></div>'
       + legendCN
       + '<div class="chart-wrap" style="height:190px"><canvas id="cGrow"></canvas></div></div>';
+    if (dd.fluxo) {
+      growth += '<div class="card"><div class="card-title">Entradas × Saídas <span class="card-note">todos os registros</span></div>'
+        + '<div class="legend"><span><span class="dot" style="background:'+C.brandMd+'"></span>Entradas</span>'
+        + '<span><span class="dot" style="background:'+C.terraMd+'"></span>Saídas</span>'
+        + '<span><span class="dot" style="background:'+C.grayDark+'"></span>Saldo</span></div>'
+        + '<div class="chart-wrap" style="height:190px"><canvas id="cFlux"></canvas></div></div>';
+    }
+    growth += '</div>';
 
-    var motivos = '<p class="sec">Motivo de Inclusão</p><div class="card"><div class="bar-list" id="bMot"></div></div>';
+    var motivos = '<p class="sec">Movimentação — motivos</p><div class="'+(dd.motivos_saida ? 'g2' : '')+'">'
+      + '<div class="card"><div class="card-title">Motivo de Inclusão</div><div class="bar-list" id="bMot"></div></div>'
+      + (dd.motivos_saida ? '<div class="card"><div class="card-title">Motivo de Saída <span class="card-note">exclusões do rol</span></div><div class="bar-list" id="bSai"></div></div>' : '')
+      + '</div>';
 
     var escola = limpar(dd.escolaridade);
     var origem = limpar(dd.origem);
@@ -345,43 +387,62 @@ function K(lbl, val, sub, cls) {
 function buildCharts(s) {
   if (!s.det) return;
   var dd = s.det;
-  var tc = 'rgba(0,0,0,0.38)';
-  var gc = 'rgba(0,0,0,0.05)';
+  var tc = 'rgba(18,26,20,0.42)';
+  var gc = 'rgba(1,38,21,0.05)';
+
+  function eixos(extra) {
+    return Object.assign({
+      x: { ticks:{ color:tc, font:{ size:9 }, maxRotation:45, autoSkip:false }, grid:{ color:gc } },
+      y: { beginAtZero:true, ticks:{ color:tc, font:{ size:10 } }, grid:{ color:gc } }
+    }, extra || {});
+  }
 
   CH.push(new Chart(document.getElementById('cAge'), {
     type:'bar',
     data:{ labels:dd.faixas.labels, datasets:[
-      { label:'Comungantes',     data:dd.faixas.comungantes,     backgroundColor:C.blueMd,  borderRadius:3 },
-      { label:'Não comungantes', data:dd.faixas.nao_comungantes, backgroundColor:C.greenMd, borderRadius:3 }
+      { label:'Comungantes',     data:dd.faixas.comungantes,     backgroundColor:C.brandMd, borderRadius:3 },
+      { label:'Não comungantes', data:dd.faixas.nao_comungantes, backgroundColor:C.gray,    borderRadius:3 }
     ]},
-    options:{ responsive:true, maintainAspectRatio:false, plugins:{ legend:{ display:false } },
-      scales:{ x:{ ticks:{ color:tc, font:{ size:10 } }, grid:{ color:gc } }, y:{ ticks:{ color:tc, font:{ size:10 } }, grid:{ color:gc } } } }
+    options:{ responsive:true, maintainAspectRatio:false, plugins:{ legend:{ display:false } }, scales:eixos() }
   }));
 
   CH.push(new Chart(document.getElementById('cSex'), {
     type:'doughnut',
-    data:{ labels:['Masculino','Feminino'], datasets:[{ data:[dd.sexo.masculino,dd.sexo.feminino], backgroundColor:[C.blueMd,C.pink], borderWidth:0 }] },
+    data:{ labels:['Masculino','Feminino'], datasets:[{ data:[dd.sexo.masculino,dd.sexo.feminino], backgroundColor:[C.tealMd,C.plum], borderWidth:0 }] },
     options:{ responsive:true, maintainAspectRatio:false, cutout:'62%', plugins:{ legend:{ display:false } } }
   }));
 
-  var g = prepGrowth(dd.crescimento);
+  var g = sem1960(dd.crescimento.anos, [dd.crescimento.comungantes, dd.crescimento.nao_comungantes]);
   CH.push(new Chart(document.getElementById('cGrow'), {
     type:'line',
     data:{ labels:g.anos, datasets:[
-      { label:'Comungantes',     data:g.com,  borderColor:C.blueMd,  backgroundColor:C.blueMd,  pointRadius:3.5, pointHoverRadius:5, borderWidth:2, tension:0.3 },
-      { label:'Não comungantes', data:g.ncom, borderColor:C.greenMd, backgroundColor:C.greenMd, pointRadius:3.5, pointHoverRadius:5, borderWidth:2, tension:0.3 }
+      { label:'Comungantes',     data:g.s[0], borderColor:C.brandMd, backgroundColor:C.brandMd, pointRadius:3.5, pointHoverRadius:5, borderWidth:2, tension:0.3 },
+      { label:'Não comungantes', data:g.s[1], borderColor:C.gray,    backgroundColor:C.gray,    pointRadius:3.5, pointHoverRadius:5, borderWidth:2, tension:0.3 }
     ]},
-    options:{ responsive:true, maintainAspectRatio:false, plugins:{ legend:{ display:false } },
-      scales:{ x:{ ticks:{ color:tc, font:{ size:9 }, maxRotation:45, autoSkip:false }, grid:{ color:gc } },
-               y:{ beginAtZero:true, ticks:{ color:tc, font:{ size:10 } }, grid:{ color:gc } } } }
+    options:{ responsive:true, maintainAspectRatio:false, plugins:{ legend:{ display:false } }, scales:eixos() }
   }));
 
-  fillBars('bMot', limpar(dd.motivos),      C.blueMd);
-  fillBars('bCiv', limpar(dd.civil),        C.greenMd);
-  fillBars('bCid', limpar(dd.cidades),      C.blue);
-  fillBars('bEsc', limpar(dd.escolaridade), C.purple);
-  fillBars('bOri', limpar(dd.origem),       C.orangeMd);
-  fillBars('bFil', limpar(dd.filhos),       C.pink);
+  if (dd.fluxo && document.getElementById('cFlux')) {
+    var f = sem1960(dd.fluxo.anos, [dd.fluxo.entradas, dd.fluxo.saidas, dd.fluxo.saldo]);
+    CH.push(new Chart(document.getElementById('cFlux'), {
+      type:'line',
+      data:{ labels:f.anos, datasets:[
+        { label:'Entradas', data:f.s[0], borderColor:C.brandMd,  backgroundColor:C.brandMd,  pointRadius:3.5, pointHoverRadius:5, borderWidth:2, tension:0.3 },
+        { label:'Saídas',   data:f.s[1], borderColor:C.terraMd,  backgroundColor:C.terraMd,  pointRadius:3.5, pointHoverRadius:5, borderWidth:2, tension:0.3 },
+        { label:'Saldo',    data:f.s[2], borderColor:C.grayDark, backgroundColor:C.grayDark, pointRadius:0,   pointHoverRadius:4, borderWidth:1.5, borderDash:[5,4], tension:0.3 }
+      ]},
+      options:{ responsive:true, maintainAspectRatio:false, plugins:{ legend:{ display:false } },
+        scales:eixos({ y:{ beginAtZero:true, ticks:{ color:tc, font:{ size:10 } }, grid:{ color:gc } } }) }
+    }));
+  }
+
+  fillBars('bMot', limpar(dd.motivos),       C.brandMd);
+  fillBars('bSai', limpar(dd.motivos_saida), C.terraMd);
+  fillBars('bCiv', limpar(dd.civil),         C.tealMd);
+  fillBars('bCid', limpar(dd.cidades),       C.brand);
+  fillBars('bEsc', limpar(dd.escolaridade),  C.goldMd);
+  fillBars('bOri', limpar(dd.origem),        C.teal);
+  fillBars('bFil', limpar(dd.filhos),        C.plum);
 }
 
 function fillBars(id, items, color) {
