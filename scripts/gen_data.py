@@ -89,17 +89,19 @@ def bloco(membros, exclusoes):
                 anos_inc.setdefault(a, {"c": 0, "n": 0})[tipo] += 1
     anos_sorted = sorted(anos_inc)
 
-    # Fluxo: entradas (todos os registros, inclusive inativos e excluídos) × saídas
+    # Fluxo: entradas (todos os registros, inclusive inativos e excluídos) × saídas,
+    # cada um separado por comungante [0] / não comungante [1]
     entradas, saidas = {}, {}
     for r in membros + exclusoes:
         a = ano(r, DT_INC)
         if a:
-            entradas[a] = entradas.get(a, 0) + 1
+            entradas.setdefault(a, [0, 0])[0 if cel(r, COMUNGANTE) == "Sim" else 1] += 1
     for r in exclusoes:
         a = ano(r, EXC_DT_ALT) or ano(r, EXC_DT_FALEC)
         if a:
-            saidas[a] = saidas.get(a, 0) + 1
+            saidas.setdefault(a, [0, 0])[0 if cel(r, COMUNGANTE) == "Sim" else 1] += 1
     anos_fluxo = sorted(set(entradas) | set(saidas))
+    zero = [0, 0]
 
     return {
         "comungantes": len(com),
@@ -119,9 +121,13 @@ def bloco(membros, exclusoes):
         },
         "fluxo": {
             "anos": anos_fluxo,
-            "entradas": [entradas.get(a, 0) for a in anos_fluxo],
-            "saidas": [saidas.get(a, 0) for a in anos_fluxo],
-            "saldo": [entradas.get(a, 0) - saidas.get(a, 0) for a in anos_fluxo],
+            "entradas": [sum(entradas.get(a, zero)) for a in anos_fluxo],
+            "entradas_c": [entradas.get(a, zero)[0] for a in anos_fluxo],
+            "entradas_n": [entradas.get(a, zero)[1] for a in anos_fluxo],
+            "saidas": [sum(saidas.get(a, zero)) for a in anos_fluxo],
+            "saidas_c": [saidas.get(a, zero)[0] for a in anos_fluxo],
+            "saidas_n": [saidas.get(a, zero)[1] for a in anos_fluxo],
+            "saldo": [sum(entradas.get(a, zero)) - sum(saidas.get(a, zero)) for a in anos_fluxo],
         },
         "motivos": conta_campo(ativos, MOTIVO),
         "motivos_saida": conta_campo(exclusoes, EXC_MOTIVO),
@@ -153,6 +159,7 @@ def main():
                         "a_parte": b["a_parte"], "exclusoes": b["exclusoes"]})
 
     out = {
+        "atualizado_em": datetime.datetime.now().astimezone().isoformat(timespec="seconds"),
         "resumo": {k: geral[k] for k in ("comungantes", "nao_comungantes", "a_parte", "exclusoes", "media_idade")},
         "igrejas": igrejas,
         **{k: geral[k] for k in ("sexo", "faixas", "crescimento", "fluxo", "motivos", "motivos_saida",

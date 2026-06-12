@@ -1,3 +1,4 @@
+<!-- Gerado a partir do index.html do repositório. Ao mudar o painel, regenere este arquivo. -->
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -140,11 +141,12 @@ body { font-family:'Google Sans','Segoe UI',system-ui,sans-serif; background:var
 <div class="top">
   <div class="hdr">
     <div class="hdr-in">
-      <img src="logo.png" alt="IPB Jacareí" class="hdr-logo">
+      <img src="https://joaooomarcos.github.io/ipb-jacarei-dashboard/logo.png" alt="IPB Jacareí" class="hdr-logo">
       <div>
         <div class="hdr-title">Painel de Membros</div>
         <div class="hdr-sub">Igreja Presbiteriana de Jacareí</div>
       </div>
+      <a href="https://joaooomarcos.github.io/ipb-jacarei-dashboard/" target="_blank" style="margin-left:auto;font-size:11px;padding:5px 12px;border-radius:6px;border:1px solid rgba(255,255,255,0.28);color:#D7E5DC;text-decoration:none">Abrir online ↗</a>
     </div>
   </div>
   <div class="filter-bar" id="filterBar" style="display:none">
@@ -167,8 +169,7 @@ body { font-family:'Google Sans','Segoe UI',system-ui,sans-serif; background:var
 <div id="dash" class="dash" style="display:none"></div>
 
 <script>
-// data.json é servido pelo GitHub Pages no mesmo domínio do painel
-var API_URL = "data.json";
+// No modal da planilha os dados vêm direto do Apps Script (sempre atuais)
 
 var C = {
   brand:'#013C21', brandDeep:'#036135', brandMd:'#0B8A4D', brandSoft:'#9FCDB4',
@@ -203,20 +204,20 @@ function loadData() {
   document.getElementById('dash').style.display    = 'none';
   destroyCharts();
 
-  fetch(API_URL)
-    .then(function(res) {
-      if (!res.ok) throw new Error('HTTP ' + res.status);
-      LAST_MOD = res.headers.get('last-modified');
-      return res.json();
+  google.script.run
+    .withSuccessHandler(function(raw) {
+      try {
+        var data = JSON.parse(raw);
+        if (data.erro) { showErr(data.erro); return; }
+        DATA = data;
+        document.getElementById('filterBar').style.display = 'flex';
+        renderDash(data);
+      } catch (e) {
+        showErr('Erro ao processar: ' + e.message);
+      }
     })
-    .then(function(data) {
-      DATA = data;
-      document.getElementById('filterBar').style.display = 'flex';
-      renderDash(data);
-    })
-    .catch(function(err) {
-      showErr('Erro ao carregar dados: ' + err.message);
-    });
+    .withFailureHandler(function(e) { showErr((e && e.message) || 'Erro desconhecido'); })
+    .getDashboardData();
 }
 
 function showErr(msg) {

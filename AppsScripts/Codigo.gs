@@ -9,6 +9,7 @@
 
 var GITHUB_REPO = "joaooomarcos/ipb-jacarei-dashboard";
 var GITHUB_FILE = "data.json";
+var PAGES_URL   = "https://joaooomarcos.github.io/ipb-jacarei-dashboard/";
 
 var SHEETS = {
   membros:   "Membros",
@@ -49,6 +50,7 @@ function onOpen() {
   SpreadsheetApp.getUi()
     .createMenu("📊 Painel de Membros")
     .addItem("Abrir painel de membros", "showDashboard")
+    .addItem("🌐 Abrir painel online", "abrirPainelOnline")
     .addSeparator()
     .addItem("🔄 Publicar dados", "publicarDados")
     .addToUi();
@@ -59,6 +61,17 @@ function showDashboard() {
     .setWidth(1000)
     .setHeight(650);
   SpreadsheetApp.getUi().showModelessDialog(html, "Painel de Membros — IPB Jacareí");
+}
+
+// Menus não podem abrir URLs diretamente: abre um diálogo mínimo
+// que dispara window.open e se fecha sozinho
+function abrirPainelOnline() {
+  const html = HtmlService.createHtmlOutput(
+    '<script>window.open(' + JSON.stringify(PAGES_URL) + ', "_blank");google.script.host.close();</script>' +
+    '<p style="font-family:sans-serif;font-size:13px">Abrindo o painel… ' +
+    '<a href="' + PAGES_URL + '" target="_blank">clique aqui</a> se não abrir automaticamente.</p>'
+  ).setWidth(330).setHeight(60);
+  SpreadsheetApp.getUi().showModalDialog(html, "Painel online");
 }
 
 // ---------- Leitura das abas ----------
@@ -109,6 +122,7 @@ function getDashboardData() {
   });
 
   return JSON.stringify({
+    atualizado_em: new Date().toISOString(),
     resumo: {
       comungantes:     geral.comungantes,
       nao_comungantes: geral.nao_comungantes,
@@ -149,17 +163,21 @@ function calcBloco(membros, exclusoes) {
   ncom.forEach(r => { const a = toAno(r[COL.dt_inc]); if (a) (anosInc[a] = anosInc[a] || { c: 0, n: 0 }).n++; });
   const anosSorted = Object.keys(anosInc).map(Number).sort((a, b) => a - b);
 
-  // Fluxo: entradas (todos os registros, inclusive inativos e excluídos) × saídas
+  // Fluxo: entradas (todos os registros, inclusive inativos e excluídos) × saídas,
+  // cada um separado por comungante [0] / não comungante [1]
   const entradas = {}, saidas = {};
   membros.concat(exclusoes).forEach(r => {
-    const a = toAno(r[COL.dt_inc]); if (a) entradas[a] = (entradas[a] || 0) + 1;
+    const a = toAno(r[COL.dt_inc]);
+    if (a) (entradas[a] = entradas[a] || [0, 0])[cel(r, COL.comungante) === "Sim" ? 0 : 1]++;
   });
   exclusoes.forEach(r => {
     const a = toAno(r[COL.exc_dt_alt]) || toAno(r[COL.exc_dt_falec]);
-    if (a) saidas[a] = (saidas[a] || 0) + 1;
+    if (a) (saidas[a] = saidas[a] || [0, 0])[cel(r, COL.comungante) === "Sim" ? 0 : 1]++;
   });
   const anosFluxo = Object.keys(entradas).concat(Object.keys(saidas))
     .map(Number).filter((v, i, arr) => arr.indexOf(v) === i).sort((a, b) => a - b);
+  const ent = a => entradas[a] || [0, 0];
+  const sai = a => saidas[a]   || [0, 0];
 
   return {
     comungantes:     com.length,
@@ -178,10 +196,14 @@ function calcBloco(membros, exclusoes) {
       nao_comungantes: anosSorted.map(a => anosInc[a].n)
     },
     fluxo: {
-      anos:     anosFluxo,
-      entradas: anosFluxo.map(a => entradas[a] || 0),
-      saidas:   anosFluxo.map(a => saidas[a] || 0),
-      saldo:    anosFluxo.map(a => (entradas[a] || 0) - (saidas[a] || 0))
+      anos:       anosFluxo,
+      entradas:   anosFluxo.map(a => ent(a)[0] + ent(a)[1]),
+      entradas_c: anosFluxo.map(a => ent(a)[0]),
+      entradas_n: anosFluxo.map(a => ent(a)[1]),
+      saidas:     anosFluxo.map(a => sai(a)[0] + sai(a)[1]),
+      saidas_c:   anosFluxo.map(a => sai(a)[0]),
+      saidas_n:   anosFluxo.map(a => sai(a)[1]),
+      saldo:      anosFluxo.map(a => ent(a)[0] + ent(a)[1] - sai(a)[0] - sai(a)[1])
     },
     motivos:       contaCampo(ativos, COL.motivo),
     motivos_saida: contaCampo(exclusoes, COL.exc_motivo),
