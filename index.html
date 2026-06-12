@@ -22,13 +22,19 @@
 html, body { width:100%; min-height:100%; }
 body { font-family:'Google Sans','Segoe UI',system-ui,sans-serif; background:var(--bg); color:var(--text); font-size:13px; line-height:1.5; }
 
-.hdr { background:var(--surface); border-bottom:1px solid var(--border); padding:11px 20px; display:flex; align-items:center; justify-content:space-between; position:sticky; top:0; z-index:10; }
+.top { position:sticky; top:0; z-index:10; background:var(--surface); border-bottom:1px solid var(--border); }
+.hdr { padding:11px 20px; display:flex; align-items:center; justify-content:space-between; max-width:1100px; margin:0 auto; }
 .hdr-left { display:flex; align-items:center; gap:10px; }
 .hdr-logo { width:30px; height:30px; border-radius:7px; background:var(--blue); display:flex; align-items:center; justify-content:center; color:#fff; font-weight:700; font-size:11px; }
 .hdr-title { font-size:13px; font-weight:600; }
 .hdr-sub { font-size:10px; color:var(--muted); }
 .btn { font-size:11px; padding:5px 12px; border-radius:var(--rs); background:transparent; border:1px solid var(--border); color:var(--muted); cursor:pointer; }
 .btn:hover { background:var(--bg); color:var(--text); }
+
+.filter-bar { display:flex; gap:6px; padding:0 20px 10px; max-width:1100px; margin:0 auto; flex-wrap:wrap; }
+.fbtn { font-size:11px; font-weight:600; padding:6px 16px; border-radius:20px; border:1px solid var(--border); background:var(--surface); color:var(--muted); cursor:pointer; transition:background .15s, color .15s, border-color .15s; }
+.fbtn:hover { background:var(--bg); color:var(--text); }
+.fbtn.active { background:var(--ab,var(--text)); border-color:var(--ab,var(--text)); color:#fff; }
 
 .state { display:flex; flex-direction:column; align-items:center; justify-content:center; min-height:60vh; gap:10px; color:var(--muted); }
 .spinner { width:26px; height:26px; border:3px solid var(--border); border-top-color:var(--blue-md); border-radius:50%; animation:spin .7s linear infinite; }
@@ -38,7 +44,7 @@ body { font-family:'Google Sans','Segoe UI',system-ui,sans-serif; background:var
 .sec { font-size:9px; font-weight:700; letter-spacing:.12em; text-transform:uppercase; color:var(--subtle); margin:20px 0 9px; }
 .sec:first-child { margin-top:0; }
 
-.kpi-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(110px,1fr)); gap:8px; }
+.kpi-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(130px,1fr)); gap:8px; }
 .kpi { background:var(--surface); border-radius:var(--r); border:1px solid var(--border); padding:12px 14px; }
 .kpi-lbl { font-size:10px; color:var(--muted); margin-bottom:3px; }
 .kpi-val { font-size:24px; font-weight:600; line-height:1.1; }
@@ -57,11 +63,12 @@ body { font-family:'Google Sans','Segoe UI',system-ui,sans-serif; background:var
 .pill-val { font-size:28px; font-weight:600; line-height:1; }
 .pill-sub { font-size:10px; color:var(--subtle); margin-top:2px; }
 .pill-badge { font-size:18px; font-weight:700; padding:6px 12px; border-radius:var(--rs); }
-.pill.com  { border-left:4px solid var(--blue);  } .pill.com  .pill-val { color:var(--blue);  } .pill.com  .pill-badge { background:var(--blue-lt);  color:var(--blue);  }
-.pill.ncom { border-left:4px solid var(--green); } .pill.ncom .pill-val { color:var(--green); } .pill.ncom .pill-badge { background:var(--green-lt); color:var(--green); }
+.pill.com  { border-left:3px solid var(--blue);  } .pill.com  .pill-val { color:var(--blue);  } .pill.com  .pill-badge { background:var(--blue-lt);  color:var(--blue);  }
+.pill.ncom { border-left:3px solid var(--green); } .pill.ncom .pill-val { color:var(--green); } .pill.ncom .pill-badge { background:var(--green-lt); color:var(--green); }
 
 .ig-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:8px; }
-.ig-card { background:var(--surface); border-radius:var(--r); border:1px solid var(--border); padding:14px; }
+.ig-card { background:var(--surface); border-radius:var(--r); border:1px solid var(--border); padding:14px; cursor:pointer; transition:border-color .15s, box-shadow .15s; }
+.ig-card:hover { border-color:rgba(0,0,0,0.18); box-shadow:0 2px 8px rgba(0,0,0,0.06); }
 .ig-bar { height:3px; border-radius:2px; margin-bottom:10px; }
 .ig-nome { font-size:11px; font-weight:600; margin-bottom:2px; }
 .ig-total { font-size:26px; font-weight:600; line-height:1.1; margin-bottom:6px; }
@@ -93,7 +100,7 @@ body { font-family:'Google Sans','Segoe UI',system-ui,sans-serif; background:var
 .bar-fill { height:100%; border-radius:3px; }
 .bar-num { font-size:10px; font-weight:600; color:var(--text); min-width:22px; text-align:right; }
 
-.sem-data-badge { display:inline-flex; align-items:center; gap:6px; background:var(--amber-lt); border:1px solid rgba(186,117,23,.2); border-radius:var(--rs); padding:5px 10px; font-size:10px; color:var(--amber); font-weight:500; margin-bottom:10px; }
+.notice { display:flex; align-items:center; gap:8px; color:var(--muted); font-size:11px; }
 .footer { font-size:10px; color:var(--subtle); text-align:right; margin-top:18px; }
 
 @media (max-width: 600px) {
@@ -107,15 +114,23 @@ body { font-family:'Google Sans','Segoe UI',system-ui,sans-serif; background:var
 </head>
 <body>
 
-<div class="hdr">
-  <div class="hdr-left">
-    <div class="hdr-logo">IPB</div>
-    <div>
-      <div class="hdr-title">Painel de Membros</div>
-      <div class="hdr-sub">Igreja Presbiteriana do Brasil — Jacareí</div>
+<div class="top">
+  <div class="hdr">
+    <div class="hdr-left">
+      <div class="hdr-logo">IPB</div>
+      <div>
+        <div class="hdr-title">Painel de Membros</div>
+        <div class="hdr-sub">Igreja Presbiteriana do Brasil — Jacareí</div>
+      </div>
     </div>
+    <button class="btn" onclick="loadData()">↻ Atualizar</button>
   </div>
-  <button class="btn" onclick="loadData()">↻ Atualizar</button>
+  <div class="filter-bar" id="filterBar" style="display:none">
+    <button class="fbtn active" data-view="Geral" onclick="setView('Geral')">Geral</button>
+    <button class="fbtn" data-view="Central" style="--ab:#185FA5" onclick="setView('Central')">Central</button>
+    <button class="fbtn" data-view="Villa Branca" style="--ab:#0F6E56" onclick="setView('Villa Branca')">Villa Branca</button>
+    <button class="fbtn" data-view="Nova Esperança" style="--ab:#C4511A" onclick="setView('Nova Esperança')">Nova Esperança</button>
+  </div>
 </div>
 
 <div id="loading" class="state">
@@ -133,8 +148,23 @@ body { font-family:'Google Sans','Segoe UI',system-ui,sans-serif; background:var
 // ← COLE AQUI A URL DO SEU WEB APP
 var API_URL = "https://raw.githubusercontent.com/joaooomarcos/ipb-jacarei-dashboard/main/data.json";
 
+var C = { blue:'#185FA5', blueMd:'#378ADD', green:'#0F6E56', greenMd:'#1D9E75', pink:'#D4537E', purple:'#7F77DD', orange:'#C4511A', orangeMd:'#D85A30' };
+var IG_COLOR = { 'Central':C.blue, 'Villa Branca':C.green, 'Nova Esperança':C.orange };
+var IG_KPI   = { 'Central':'accent', 'Villa Branca':'green', 'Nova Esperança':'orange' };
+
+var DATA = null;
+var VIEW = 'Geral';
 var CH = [];
+
 function destroyCharts() { CH.forEach(function(c){ c.destroy(); }); CH = []; }
+
+function setView(v) {
+  VIEW = v;
+  document.querySelectorAll('.fbtn').forEach(function(b) {
+    b.classList.toggle('active', b.getAttribute('data-view') === v);
+  });
+  if (DATA) renderDash(DATA);
+}
 
 function loadData() {
   document.getElementById('loading').style.display = 'flex';
@@ -148,6 +178,8 @@ function loadData() {
       return res.json();
     })
     .then(function(data) {
+      DATA = data;
+      document.getElementById('filterBar').style.display = 'flex';
       renderDash(data);
     })
     .catch(function(err) {
@@ -170,95 +202,139 @@ function limpar(arr) {
   });
 }
 
-function renderDash(d) {
-  document.getElementById('loading').style.display = 'none';
-  var el = document.getElementById('dash');
-  el.innerHTML = buildHTML(d);
-  el.style.display = 'block';
-  setTimeout(function(){ buildCharts(d); }, 60);
+// Anos marcados como 1960 são membros sem data de inclusão — ficam fora do gráfico
+function prepGrowth(cresc) {
+  var anos = [], com = [], ncom = [];
+  for (var i = 0; i < cresc.anos.length; i++) {
+    if (cresc.anos[i] === 1960) continue;
+    anos.push(cresc.anos[i]);
+    com.push(cresc.comungantes[i]);
+    ncom.push(cresc.nao_comungantes[i] || 0);
+  }
+  return { anos:anos, com:com, ncom:ncom };
 }
 
-function buildHTML(d) {
-  var r     = d.resumo;
-  var total = r.comungantes + r.nao_comungantes;
-  var now   = new Date().toLocaleString('pt-BR');
-  var cores = ['var(--blue)','var(--green)','var(--pink-md)'];
-
-  var semData = 0;
-  var cAnos = [], cCom = [], cNcom = [];
-  for (var i = 0; i < d.crescimento.anos.length; i++) {
-    if (d.crescimento.anos[i] === 1960) {
-      semData = d.crescimento.comungantes[i];
-    } else {
-      cAnos.push(d.crescimento.anos[i]);
-      cCom.push(d.crescimento.comungantes[i]);
-      cNcom.push(d.crescimento.nao_comungantes[i] || 0);
-    }
+// Retorna o conjunto de dados da visão atual: o documento inteiro no Geral,
+// ou o bloco opcional d.por_igreja[nome] quando uma congregação está selecionada
+function getScope(d) {
+  if (VIEW === 'Geral') {
+    return {
+      geral: true,
+      com:   d.resumo.comungantes,
+      ncom:  d.resumo.nao_comungantes,
+      mediaIdade: d.resumo.media_idade,
+      det:   d
+    };
   }
-  d._cAnos = cAnos; d._cCom = cCom; d._cNcom = cNcom;
+  var ig = null;
+  d.igrejas.forEach(function(i){ if (i.nome === VIEW) ig = i; });
+  var det = (d.por_igreja && d.por_igreja[VIEW]) || null;
+  return {
+    geral: false,
+    nome:  VIEW,
+    com:   ig ? ig.comungantes : 0,
+    ncom:  ig ? ig.nao_comungantes : 0,
+    mediaIdade: det && det.media_idade,
+    det:   det
+  };
+}
+
+function renderDash(d) {
+  destroyCharts();
+  document.getElementById('loading').style.display = 'none';
+  var el = document.getElementById('dash');
+  var scope = getScope(d);
+  el.innerHTML = buildHTML(d, scope);
+  el.style.display = 'block';
+  setTimeout(function(){ buildCharts(scope); }, 60);
+}
+
+function buildHTML(d, s) {
+  var totalGeral = d.resumo.comungantes + d.resumo.nao_comungantes;
+  var total      = s.com + s.ncom;
+  var now        = new Date().toLocaleString('pt-BR');
 
   var pills = '<div class="tipo-pills">'
-    + '<div class="pill com"><div class="pill-left"><div class="pill-lbl">Comungantes</div><div class="pill-val">'+r.comungantes+'</div><div class="pill-sub">'+pct(r.comungantes,total)+'% do total · membros plenos</div></div><div class="pill-badge">C</div></div>'
-    + '<div class="pill ncom"><div class="pill-left"><div class="pill-lbl">Não Comungantes</div><div class="pill-val">'+r.nao_comungantes+'</div><div class="pill-sub">'+pct(r.nao_comungantes,total)+'% do total · catecúmenos</div></div><div class="pill-badge">NC</div></div>'
+    + '<div class="pill com"><div class="pill-left"><div class="pill-lbl">Comungantes</div><div class="pill-val">'+s.com+'</div><div class="pill-sub">'+pct(s.com,total)+'% do total · membros plenos</div></div><div class="pill-badge">C</div></div>'
+    + '<div class="pill ncom"><div class="pill-left"><div class="pill-lbl">Não Comungantes</div><div class="pill-val">'+s.ncom+'</div><div class="pill-sub">'+pct(s.ncom,total)+'% do total · catecúmenos</div></div><div class="pill-badge">NC</div></div>'
     + '</div>';
 
-  var kpis = '<p class="sec">Indicadores</p><div class="kpi-grid">'
-    + K('Total ativo',    total,            'comungantes + não com.',                'accent')
-    + K('Feminino',       d.sexo.feminino,  pct(d.sexo.feminino,total)+'% do total', 'pink')
-    + K('Masculino',      d.sexo.masculino, pct(d.sexo.masculino,total)+'% do total','purple')
-    + K('Idade média',    r.media_idade,    'anos (comungantes)',                    'amber')
-    + K('Central',        d.igrejas[0].comungantes+d.igrejas[0].nao_comungantes, pct(d.igrejas[0].comungantes+d.igrejas[0].nao_comungantes,total)+'% do total','accent')
-    + K('Villa Branca',   d.igrejas[1].comungantes+d.igrejas[1].nao_comungantes, pct(d.igrejas[1].comungantes+d.igrejas[1].nao_comungantes,total)+'% do total','green')
-    + K('Nova Esperança', d.igrejas[2].comungantes+d.igrejas[2].nao_comungantes, pct(d.igrejas[2].comungantes+d.igrejas[2].nao_comungantes,total)+'% do total','orange')
-    + (semData > 0 ? '<div class="kpi amber"><div class="kpi-lbl">Sem data inclusão</div><div class="kpi-val">'+semData+'</div><div class="kpi-sub">marcados como 01/01/1960</div></div>' : '')
-    + '</div>';
+  var kpis = '<p class="sec">Indicadores</p><div class="kpi-grid">';
+  if (s.geral) {
+    kpis += K('Total ativo', total,            'comungantes + não com.',                 'accent')
+          + K('Feminino',    d.sexo.feminino,  pct(d.sexo.feminino,total)+'% do total',  'pink')
+          + K('Masculino',   d.sexo.masculino, pct(d.sexo.masculino,total)+'% do total', 'purple')
+          + K('Idade média', s.mediaIdade,     'anos (comungantes)',                     'amber');
+  } else {
+    kpis += K('Total ativo',  total, pct(total,totalGeral)+'% da igreja', IG_KPI[s.nome]);
+    if (s.det && s.det.sexo) {
+      kpis += K('Feminino',  s.det.sexo.feminino,  pct(s.det.sexo.feminino,total)+'% do total',  'pink')
+            + K('Masculino', s.det.sexo.masculino, pct(s.det.sexo.masculino,total)+'% do total', 'purple');
+    }
+    if (s.mediaIdade) kpis += K('Idade média', s.mediaIdade, 'anos (comungantes)', 'amber');
+  }
+  kpis += '</div>';
 
-  var igrejas = '<p class="sec">Por Congregação</p><div class="ig-grid">'
-    + d.igrejas.map(function(ig, i) {
-        var sub = ig.comungantes + ig.nao_comungantes;
-        var p   = pct(sub, total);
-        return '<div class="ig-card">'
-          + '<div class="ig-bar" style="background:'+cores[i]+';width:'+p+'%"></div>'
-          + '<div class="ig-nome">'+ig.nome+'</div>'
-          + '<div class="ig-total" style="color:'+cores[i]+'">'+sub+'</div>'
-          + '<div class="ig-pct-track"><div class="ig-pct-fill" style="width:'+p+'%;background:'+cores[i]+'"></div></div>'
-          + '<div class="tags"><span class="tag tag-c">'+ig.comungantes+' com.</span><span class="tag tag-nc">'+ig.nao_comungantes+' n.com.</span></div>'
-          + '<div class="ig-rows"><div class="ig-row"><span>% do total</span><span>'+p+'%</span></div></div>'
-          + '</div>';
-      }).join('')
-    + '</div>';
+  var igrejas = '';
+  if (s.geral) {
+    igrejas = '<p class="sec">Por Congregação</p><div class="ig-grid">'
+      + d.igrejas.map(function(ig) {
+          var sub = ig.comungantes + ig.nao_comungantes;
+          var p   = pct(sub, totalGeral);
+          var cor = IG_COLOR[ig.nome] || C.blue;
+          return '<div class="ig-card" onclick="setView(\''+ig.nome+'\')" title="Ver só '+ig.nome+'">'
+            + '<div class="ig-bar" style="background:'+cor+';width:'+p+'%"></div>'
+            + '<div class="ig-nome">'+ig.nome+'</div>'
+            + '<div class="ig-total" style="color:'+cor+'">'+sub+'</div>'
+            + '<div class="ig-pct-track"><div class="ig-pct-fill" style="width:'+p+'%;background:'+cor+'"></div></div>'
+            + '<div class="tags"><span class="tag tag-c">'+ig.comungantes+' com.</span><span class="tag tag-nc">'+ig.nao_comungantes+' n.com.</span></div>'
+            + '<div class="ig-rows"><div class="ig-row"><span>% do total</span><span>'+p+'%</span></div></div>'
+            + '</div>';
+        }).join('')
+      + '</div>';
+  }
 
-  var comp = '<p class="sec">Composição</p><div class="g2h">'
-    + '<div class="card"><div class="card-title">Faixa etária</div>'
-    + '<div class="legend"><span><span class="dot" style="background:#378ADD"></span>Comungantes</span><span><span class="dot" style="background:#1D9E75"></span>Não comungantes</span></div>'
-    + '<div class="chart-wrap" style="height:180px"><canvas id="cAge"></canvas></div></div>'
-    + '<div class="card"><div class="card-title">Sexo</div>'
-    + '<div class="legend"><span><span class="dot" style="background:#378ADD"></span>Masc. '+d.sexo.masculino+'</span><span><span class="dot" style="background:#D4537E"></span>Fem. '+d.sexo.feminino+'</span></div>'
-    + '<div class="chart-wrap" style="height:180px"><canvas id="cSex"></canvas></div></div>'
-    + '</div>';
+  var detalhes = '';
+  if (s.det) {
+    var dd = s.det;
+    var legendCN = '<div class="legend"><span><span class="dot" style="background:'+C.blueMd+'"></span>Comungantes</span><span><span class="dot" style="background:'+C.greenMd+'"></span>Não comungantes</span></div>';
 
-  var growth = '<p class="sec">Crescimento — inclusões por ano</p><div class="card">'
-    + (semData > 0 ? '<div class="sem-data-badge">⚠️ '+semData+' membros sem data de inclusão registrada não aparecem neste gráfico</div>' : '')
-    + '<div class="legend"><span><span class="dot" style="background:#378ADD"></span>Comungantes</span><span><span class="dot" style="background:#1D9E75"></span>Não comungantes</span></div>'
-    + '<div class="chart-wrap" style="height:190px"><canvas id="cGrow"></canvas></div></div>';
+    var comp = '<p class="sec">Composição</p><div class="g2h">'
+      + '<div class="card"><div class="card-title">Faixa etária</div>'
+      + legendCN
+      + '<div class="chart-wrap" style="height:180px"><canvas id="cAge"></canvas></div></div>'
+      + '<div class="card"><div class="card-title">Sexo</div>'
+      + '<div class="legend"><span><span class="dot" style="background:'+C.blueMd+'"></span>Masc. '+dd.sexo.masculino+'</span><span><span class="dot" style="background:'+C.pink+'"></span>Fem. '+dd.sexo.feminino+'</span></div>'
+      + '<div class="chart-wrap" style="height:180px"><canvas id="cSex"></canvas></div></div>'
+      + '</div>';
 
-  var motivos = '<p class="sec">Motivo de Inclusão</p><div class="card"><div class="bar-list" id="bMot"></div></div>';
+    var growth = '<p class="sec">Crescimento — inclusões por ano</p><div class="card">'
+      + legendCN
+      + '<div class="chart-wrap" style="height:190px"><canvas id="cGrow"></canvas></div></div>';
 
-  var escola = limpar(d.escolaridade);
-  var origem = limpar(d.origem);
-  var filhos = limpar(d.filhos);
+    var motivos = '<p class="sec">Motivo de Inclusão</p><div class="card"><div class="bar-list" id="bMot"></div></div>';
 
-  var perfil = '<p class="sec">Perfil</p><div class="g2">'
-    + '<div class="card"><div class="card-title">Estado Civil</div><div class="bar-list" id="bCiv"></div></div>'
-    + '<div class="card"><div class="card-title">Cidade de Residência</div><div class="bar-list" id="bCid"></div></div>'
-    + '</div>'
-    + '<div class="g3" style="margin-top:8px">'
-    + '<div class="card"><div class="card-title">Escolaridade <span class="card-note">'+escola.length+' valores</span></div><div class="bar-list" id="bEsc"></div></div>'
-    + '<div class="card"><div class="card-title">Origem Religiosa <span class="card-note">'+origem.length+' valores</span></div><div class="bar-list" id="bOri"></div></div>'
-    + '<div class="card"><div class="card-title">Possui Filhos <span class="card-note">'+filhos.length+' valores</span></div><div class="bar-list" id="bFil"></div></div>'
-    + '</div>';
+    var escola = limpar(dd.escolaridade);
+    var origem = limpar(dd.origem);
+    var filhos = limpar(dd.filhos);
 
-  return pills + kpis + igrejas + comp + growth + motivos + perfil
+    var perfil = '<p class="sec">Perfil</p><div class="g2">'
+      + '<div class="card"><div class="card-title">Estado Civil</div><div class="bar-list" id="bCiv"></div></div>'
+      + '<div class="card"><div class="card-title">Cidade de Residência</div><div class="bar-list" id="bCid"></div></div>'
+      + '</div>'
+      + '<div class="g3" style="margin-top:8px">'
+      + '<div class="card"><div class="card-title">Escolaridade <span class="card-note">'+escola.length+' valores</span></div><div class="bar-list" id="bEsc"></div></div>'
+      + '<div class="card"><div class="card-title">Origem Religiosa <span class="card-note">'+origem.length+' valores</span></div><div class="bar-list" id="bOri"></div></div>'
+      + '<div class="card"><div class="card-title">Possui Filhos <span class="card-note">'+filhos.length+' valores</span></div><div class="bar-list" id="bFil"></div></div>'
+      + '</div>';
+
+    detalhes = comp + growth + motivos + perfil;
+  } else {
+    detalhes = '<p class="sec">Detalhes</p><div class="card notice">ℹ️ Os dados detalhados de '+s.nome
+      + ' (faixa etária, crescimento, perfil) ainda não estão disponíveis na planilha. Por enquanto, eles aparecem apenas na visão Geral.</div>';
+  }
+
+  return pills + kpis + igrejas + detalhes
     + '<div class="footer">Atualizado em ' + now + '</div>';
 }
 
@@ -266,15 +342,17 @@ function K(lbl, val, sub, cls) {
   return '<div class="kpi '+cls+'"><div class="kpi-lbl">'+lbl+'</div><div class="kpi-val">'+val+'</div><div class="kpi-sub">'+sub+'</div></div>';
 }
 
-function buildCharts(d) {
+function buildCharts(s) {
+  if (!s.det) return;
+  var dd = s.det;
   var tc = 'rgba(0,0,0,0.38)';
   var gc = 'rgba(0,0,0,0.05)';
 
   CH.push(new Chart(document.getElementById('cAge'), {
     type:'bar',
-    data:{ labels:d.faixas.labels, datasets:[
-      { label:'Comungantes',     data:d.faixas.comungantes,     backgroundColor:'#378ADD', borderRadius:3 },
-      { label:'Não comungantes', data:d.faixas.nao_comungantes, backgroundColor:'#1D9E75', borderRadius:3 }
+    data:{ labels:dd.faixas.labels, datasets:[
+      { label:'Comungantes',     data:dd.faixas.comungantes,     backgroundColor:C.blueMd,  borderRadius:3 },
+      { label:'Não comungantes', data:dd.faixas.nao_comungantes, backgroundColor:C.greenMd, borderRadius:3 }
     ]},
     options:{ responsive:true, maintainAspectRatio:false, plugins:{ legend:{ display:false } },
       scales:{ x:{ ticks:{ color:tc, font:{ size:10 } }, grid:{ color:gc } }, y:{ ticks:{ color:tc, font:{ size:10 } }, grid:{ color:gc } } } }
@@ -282,27 +360,28 @@ function buildCharts(d) {
 
   CH.push(new Chart(document.getElementById('cSex'), {
     type:'doughnut',
-    data:{ labels:['Masculino','Feminino'], datasets:[{ data:[d.sexo.masculino,d.sexo.feminino], backgroundColor:['#378ADD','#D4537E'], borderWidth:0 }] },
+    data:{ labels:['Masculino','Feminino'], datasets:[{ data:[dd.sexo.masculino,dd.sexo.feminino], backgroundColor:[C.blueMd,C.pink], borderWidth:0 }] },
     options:{ responsive:true, maintainAspectRatio:false, cutout:'62%', plugins:{ legend:{ display:false } } }
   }));
 
+  var g = prepGrowth(dd.crescimento);
   CH.push(new Chart(document.getElementById('cGrow'), {
-    type:'bar',
-    data:{ labels:d._cAnos, datasets:[
-      { label:'Comungantes',     data:d._cCom,  backgroundColor:'#378ADD', borderRadius:3, stack:'a' },
-      { label:'Não comungantes', data:d._cNcom, backgroundColor:'#1D9E75', borderRadius:3, stack:'a' }
+    type:'line',
+    data:{ labels:g.anos, datasets:[
+      { label:'Comungantes',     data:g.com,  borderColor:C.blueMd,  backgroundColor:C.blueMd,  pointRadius:3.5, pointHoverRadius:5, borderWidth:2, tension:0.3 },
+      { label:'Não comungantes', data:g.ncom, borderColor:C.greenMd, backgroundColor:C.greenMd, pointRadius:3.5, pointHoverRadius:5, borderWidth:2, tension:0.3 }
     ]},
     options:{ responsive:true, maintainAspectRatio:false, plugins:{ legend:{ display:false } },
-      scales:{ x:{ stacked:true, ticks:{ color:tc, font:{ size:9 }, maxRotation:45, autoSkip:false }, grid:{ color:gc } },
-               y:{ stacked:true, ticks:{ color:tc, font:{ size:10 } }, grid:{ color:gc } } } }
+      scales:{ x:{ ticks:{ color:tc, font:{ size:9 }, maxRotation:45, autoSkip:false }, grid:{ color:gc } },
+               y:{ beginAtZero:true, ticks:{ color:tc, font:{ size:10 } }, grid:{ color:gc } } } }
   }));
 
-  fillBars('bMot', limpar(d.motivos),      '#378ADD');
-  fillBars('bCiv', limpar(d.civil),        '#1D9E75');
-  fillBars('bCid', limpar(d.cidades),      '#185FA5');
-  fillBars('bEsc', limpar(d.escolaridade), '#7F77DD');
-  fillBars('bOri', limpar(d.origem),       '#D85A30');
-  fillBars('bFil', limpar(d.filhos),       '#D4537E');
+  fillBars('bMot', limpar(dd.motivos),      C.blueMd);
+  fillBars('bCiv', limpar(dd.civil),        C.greenMd);
+  fillBars('bCid', limpar(dd.cidades),      C.blue);
+  fillBars('bEsc', limpar(dd.escolaridade), C.purple);
+  fillBars('bOri', limpar(dd.origem),       C.orangeMd);
+  fillBars('bFil', limpar(dd.filhos),       C.pink);
 }
 
 function fillBars(id, items, color) {
